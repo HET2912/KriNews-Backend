@@ -65,7 +65,18 @@ userSchema.pre('save', async function () {
 
 // ── Instance method: compare password ────────────────────────────────────────
 userSchema.methods.comparePassword = async function (candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
+    if (!candidatePassword) {
+        throw new Error('Password is required');
+    }
+
+    if (!this.password) {
+        throw new Error('Stored password missing');
+    }
+
+    return await bcrypt.compare(
+        String(candidatePassword),
+        String(this.password)
+    );
 };
 
 // ── Strip sensitive fields from JSON output ───────────────────────────────────
