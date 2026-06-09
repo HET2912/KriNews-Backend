@@ -4,6 +4,7 @@ const { env } = require('./env');
 
 const connectDB = async () => {
     try {
+        console.log("mongoUri =", env.mongoUri);
         const conn = await mongoose.connect(env.mongoUri, {
             serverSelectionTimeoutMS: 5000,
         });
